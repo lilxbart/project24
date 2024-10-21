@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker Main</title>
+    <link rel="stylesheet" href="styles01.css">
+</head>
+<body>
+    <!-- Верхняя панель с датой -->
+    <header>
+        <div id="date">
+            <h1>Сегодня</h1>
+            <p id="current-date"></p> 
+        </div>
+    </header>
+
+    <!-- Основной контейнер -->
+    <div class="main-container">
+        <div class="left-container">
+            <div class="calendar" id="calendar">
+                <div class="day">Пн<br><span>00.00</span></div>
+                <div class="day">Вт<br><span>00.00</span></div>
+                <div class="day">Ср<br><span>00.00</span></div>
+                <div class="day">Чт<br><span>00.00</span></div>
+                <div class="day">Пт<br><span>00.00</span></div>
+                <div class="day">Сб<br><span>00.00</span></div>
+                <div class="day">Вс<br><span>00.00</span></div>
+            </div>
+
+            <div class="habits-scroll-container">
+                <div class="habits-container" id="habits-container">
+                    <div class="habit">
+                        <button class="delete-habit">-</button>
+                        <span>ПРИВЫЧКА 01</span>
+                        <div class="habit-reminder">
+                            <p>НАПОМИНАНИЕ</p>
+                            <p>Вт, Чт, Вс</p>
+                            <p>10:00</p>
+                        </div>
+                        <button class="complete-habit">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопка добавить привычку -->
+            <button id="add-habit-button">Добавить привычку</button>
+        </div>
+
+        <div class="right-container">
+            <div class="progress-container">
+                <h2>ПРОГРЕСС</h2>
+                <div class="chart"></div>
+            </div>
+            <div class="rewards-container">
+                <h2>ВАШИ ДОСТИЖЕНИЯ</h2>
+                <div class="reward-slot"></div>
+                <div class="reward-slot"></div>
+                <div class="reward-slot"></div>
+                <div class="reward-slot"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Всплывающее окно добавления привычки -->
+    <div id="habit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Добавить новую привычку</h2>
+
+            <!-- Поле для названия привычки -->
+            <label for="habit-name">Введите название привычки</label>
+            <input type="text" id="habit-name" placeholder="Название привычки" required>
+
+            <!-- Описание привычки -->
+            <label for="habit-description">Описание</label>
+            <textarea id="habit-description" placeholder="Описание вашей привычки"></textarea>
+
+            <!-- Повторение привычки -->
+            <label for="habit-recurrence">Повторение</label>
+            <div class="habit-recurrence">
+                <button class="day">ПН</button>
+                <button class="day">ВТ</button>
+                <button class="day">СР</button>
+                <button class="day">ЧТ</button>
+                <button class="day">ПТ</button>
+                <button class="day">СБ</button>
+                <button class="day">ВС</button>
+                <button class="day">КАЖДЫЙ ДЕНЬ</button>
+            </div>
+
+            <!-- Напоминание -->
+            <label for="habit-reminder">Напоминание</label>
+            <div class="habit-reminder-toggle">
+                <span>ДА</span>
+                <input type="checkbox" id="habit-reminder">
+            </div>
+
+            <!-- Время напоминания -->
+            <input type="time" id="habit-time" value="10:00">
+
+            <!-- Кнопка подтверждения добавления привычки -->
+            <button id="submit-habit">Добавить</button>
+        </div>
+    </div>
+    
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>

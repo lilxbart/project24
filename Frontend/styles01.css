@@ -1,0 +1,307 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Стили для заголовка и даты */
+header {
+    background-color: #6f6a6a;
+    color: white;
+    text-align: left;
+    padding: 10px;
+}
+
+#date h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+#date p {
+    margin: 0;
+    font-size: 16px;
+}
+
+/* Основной контейнер */
+.main-container {
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+}
+
+.left-container {
+    width: 70%;
+}
+
+.right-container {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Стили для календаря */
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    background-color: #f4eaea;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.day {
+    text-align: center;
+    padding: 10px;
+    background-color: #d9d9d9;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.day.active {
+    background-color: #4b4b4b;
+    color: white;
+}
+
+/* Контейнер для привычек с прокруткой */
+.habits-scroll-container {
+    max-height: 500px;
+    overflow-y: auto;
+    margin-top: 20px;
+    padding-right: 10px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.habits-container {
+    padding: 10px;
+}
+
+/* Стили для отдельной привычки */
+.habit {
+    background-color: #e0e0e0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для напоминания */
+.habit-reminder {
+    text-align: center;
+    background-color: #888;
+    border-radius: 8px;
+    padding: 5px;
+    color: white;
+    font-size: 12px;
+}
+
+/* Кнопка удаления привычки */
+button.delete-habit {
+    background-color: #b34d4d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+/* Кнопка выполнения привычки */
+button.complete-habit {
+    background-color: #4d8b4d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+/* Стили для кнопок */
+button:hover {
+    opacity: 0.9;
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Кнопка добавления привычки */
+#add-habit-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#add-habit-button:hover {
+    background-color: #0056b3;
+}
+
+/* Стили для правой части с прогрессом и наградами */
+.progress-container {
+    margin-bottom: 20px;
+}
+
+.chart {
+    background-color: #7c6666;
+    width: 100px;
+    height: 150px;
+}
+
+.rewards-container {
+    background-color: #d3d3d3;
+    padding: 20px;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.reward-slot {
+    background-color: #ccc;
+    height: 50px;
+    border-radius: 4px;
+}
+
+
+
+/* Стиль модального окна */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-size: 16px;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+textarea {
+    height: 60px;
+    resize: none;
+}
+
+.habit-recurrence {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.habit-recurrence button {
+    padding: 10px;
+    border: none;
+    background-color: #d3d3d3;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.habit-recurrence button:hover {
+    background-color: #bbb;
+}
+
+.habit-reminder-toggle {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+input[type="time"] {
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button#submit-habit {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+button#submit-habit:hover {
+    background-color: #0056b3;
+}
+
+.habit-recurrence {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.habit-recurrence button {
+    padding: 10px;
+    border: none;
+    background-color: #d3d3d3;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.habit-recurrence button.selected {
+    background-color: #007bff; /* Цвет для выбранного дня */
+    color: white;
+}
+
+.habit-recurrence button:hover {
+    background-color: #bbb;
+}
+
+
