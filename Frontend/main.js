@@ -1,10 +1,9 @@
-//открытие\закрытие окна
 const modal = document.getElementById('habit-modal');
 const addHabitButton = document.getElementById('add-habit-button');
 const closeButton = document.querySelector('.close-button');
 
 addHabitButton.addEventListener('click', () => {
-    modal.style.display = 'flex'; 
+    modal.style.display = 'flex';
 });
 
 closeButton.addEventListener('click', () => {
@@ -16,7 +15,7 @@ window.addEventListener('click', (event) => {
         modal.style.display = 'none';
     }
 });
-//логика дней недели
+
 const recurrenceButtons = document.querySelectorAll('.habit-recurrence button');
 let selectedDays = [];
 
@@ -36,14 +35,12 @@ recurrenceButtons.forEach(button => {
 
 const habitsContainer = document.getElementById('habits-container');
 
-//удаление
 habitsContainer.addEventListener('click', (event) => {
     if (event.target.classList.contains('delete-habit')) {
         event.target.closest('.habit').remove();
     }
 });
 
-//выполненная
 habitsContainer.addEventListener('click', (event) => {
     if (event.target.classList.contains('complete-habit')) {
         const habitElement = event.target.closest('.habit');
@@ -61,11 +58,14 @@ submitHabitButton.addEventListener('click', () => {
     if (habitName) {
         const newHabit = document.createElement('div');
         newHabit.classList.add('habit');
+        
+        const reminderText = reminder ? `Напоминание: ${time}` : 'Без напоминания';
+        
         newHabit.innerHTML = `
             <button class="delete-habit">-</button>
             <span>${habitName}</span>
             <div class="habit-reminder">
-                <p>${reminder ? `Напоминание: ${time}` : 'Без напоминания'}</p>
+                <p>${reminderText}</p>
                 <p>Повторение: ${selectedDays.join(', ') || 'Нет'}</p>
             </div>
             <button class="complete-habit">+</button>
@@ -80,7 +80,7 @@ submitHabitButton.addEventListener('click', () => {
         document.getElementById('habit-reminder').checked = false;
         document.getElementById('habit-time').value = '10:00';
         selectedDays = [];
-        recurrenceButtons.forEach(button => button.classList.remove('selected')); // Убираем выделение с кнопок
+        recurrenceButtons.forEach(button => button.classList.remove('selected'));
     } else {
         alert('Введите название привычки');
     }
@@ -122,4 +122,3 @@ function highlightCurrentDay() {
 setCurrentDate();
 updateCalendar();
 highlightCurrentDay();
- 
