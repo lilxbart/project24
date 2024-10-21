@@ -21,7 +21,7 @@ header {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 300px;
-    height: 350px;  /* Фиксированная высота для одинакового размера */
+    height: 350px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -32,7 +32,7 @@ header {
     flex-direction: column;
     gap: 10px;
     flex-grow: 1;
-    justify-content: center; /* Центрируем формы по вертикали */
+    justify-content: center;
 }
 
 .auth-form input {
