@@ -1,4 +1,4 @@
-/* Общие стили */
+/*общие*/
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
@@ -6,7 +6,7 @@ body {
     padding: 0;
 }
 
-/* Стили для заголовка и даты */
+/*заголовок и дата*/
 header {
     background-color: #6f6a6a;
     color: white;
@@ -24,7 +24,7 @@ header {
     font-size: 16px;
 }
 
-/* Основной контейнер */
+/*основной контейнер*/
 .main-container {
     display: flex;
     padding: 20px;
@@ -42,7 +42,7 @@ header {
     align-items: center;
 }
 
-/* Стили для календаря */
+/*календарь*/
 .calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -65,7 +65,7 @@ header {
     color: white;
 }
 
-/* Контейнер для привычек с прокруткой */
+/*контейнер привычек*/
 .habits-scroll-container {
     max-height: 500px;
     overflow-y: auto;
@@ -80,7 +80,7 @@ header {
     padding: 10px;
 }
 
-/* Стили для отдельной привычки */
+/*привыка*/
 .habit {
     background-color: #e0e0e0;
     padding: 10px;
@@ -92,7 +92,7 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Стили для напоминания */
+/*напоминание*/
 .habit-reminder {
     text-align: center;
     background-color: #888;
@@ -102,7 +102,7 @@ header {
     font-size: 12px;
 }
 
-/* Кнопка удаления привычки */
+/*удаления привычки*/
 button.delete-habit {
     background-color: #b34d4d;
     color: white;
@@ -115,7 +115,7 @@ button.delete-habit {
     cursor: pointer;
 }
 
-/* Кнопка выполнения привычки */
+/*выполнения привычки*/
 button.complete-habit {
     background-color: #4d8b4d;
     color: white;
@@ -128,7 +128,7 @@ button.complete-habit {
     cursor: pointer;
 }
 
-/* Стили для кнопок */
+/*кнопоки*/
 button:hover {
     opacity: 0.9;
 }
@@ -137,7 +137,7 @@ button:focus {
     outline: none;
 }
 
-/* Кнопка добавления привычки */
+/*добавления привычки*/
 #add-habit-button {
     padding: 10px 20px;
     background-color: #007bff;
@@ -152,7 +152,7 @@ button:focus {
     background-color: #0056b3;
 }
 
-/* Стили для правой части с прогрессом и наградами */
+/*прогресс и награды*/
 .progress-container {
     margin-bottom: 20px;
 }
@@ -180,7 +180,7 @@ button:focus {
 
 
 
-/* Стиль модального окна */
+/*окно*/
 .modal {
     display: none;
     position: fixed;
@@ -296,7 +296,7 @@ button#submit-habit:hover {
 }
 
 .habit-recurrence button.selected {
-    background-color: #007bff; /* Цвет для выбранного дня */
+    background-color: #007bff;
     color: white;
 }
 

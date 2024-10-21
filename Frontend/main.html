@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="styles01.css">
 </head>
 <body>
-    <!-- Верхняя панель с датой -->
+
+
     <header>
         <div id="date">
             <h1>Сегодня</h1>
@@ -15,7 +16,8 @@
         </div>
     </header>
 
-    <!-- Основной контейнер -->
+
+
     <div class="main-container">
         <div class="left-container">
             <div class="calendar" id="calendar">
@@ -43,7 +45,6 @@
                 </div>
             </div>
 
-            <!-- Кнопка добавить привычку -->
             <button id="add-habit-button">Добавить привычку</button>
         </div>
 
@@ -63,22 +64,21 @@
     </div>
 
 
-    <!-- Всплывающее окно добавления привычки -->
+    
+
+
     <div id="habit-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h2>Добавить новую привычку</h2>
+            <h2>НОВАЯ ПРИВЫЧКА</h2>
 
-            <!-- Поле для названия привычки -->
-            <label for="habit-name">Введите название привычки</label>
+            <label for="habit-name">НАЗВАНИЕ</label>
             <input type="text" id="habit-name" placeholder="Название привычки" required>
 
-            <!-- Описание привычки -->
-            <label for="habit-description">Описание</label>
+            <label for="habit-description">ОПИСАНИЕ</label>
             <textarea id="habit-description" placeholder="Описание вашей привычки"></textarea>
 
-            <!-- Повторение привычки -->
-            <label for="habit-recurrence">Повторение</label>
+            <label for="habit-recurrence">ПОВТОРЕНИЕ</label>
             <div class="habit-recurrence">
                 <button class="day">ПН</button>
                 <button class="day">ВТ</button>
@@ -90,18 +90,15 @@
                 <button class="day">КАЖДЫЙ ДЕНЬ</button>
             </div>
 
-            <!-- Напоминание -->
-            <label for="habit-reminder">Напоминание</label>
+            <label for="habit-reminder">НАПОМИНАНИЕ</label>
             <div class="habit-reminder-toggle">
-                <span>ДА</span>
+                <span>да</span>
                 <input type="checkbox" id="habit-reminder">
             </div>
 
-            <!-- Время напоминания -->
             <input type="time" id="habit-time" value="10:00">
 
-            <!-- Кнопка подтверждения добавления привычки -->
-            <button id="submit-habit">Добавить</button>
+            <button id="submit-habit">ДОБАВИТЬ</button>
         </div>
     </div>
     
