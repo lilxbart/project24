@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #949494;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,7 +15,7 @@ header {
 }
 
 #auth-container {
-    background-color: #fff;
+    background-color: #dbdbdb;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -37,7 +37,7 @@ header {
 
 .auth-form input {
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #f8f8f8;
     border-radius: 5px;
     font-size: 14px;
 }
@@ -46,14 +46,14 @@ button {
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
+    background-color: #646464;
     color: #fff;
     font-size: 14px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #222222;
 }
 
 .hidden {
