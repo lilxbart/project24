@@ -19,7 +19,6 @@ window.addEventListener('click', (event) => {
         modal.style.display = 'none'; // Закрываем модальное окно при клике вне окна
     }
 });
-
 // Логика для выбора дней недели
 const recurrenceButtons = document.querySelectorAll('.habit-recurrence button');
 let selectedDays = [];
@@ -139,3 +138,4 @@ function highlightCurrentDay() {
 setCurrentDate();
 updateCalendar();
 highlightCurrentDay();
+ 
