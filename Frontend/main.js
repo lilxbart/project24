@@ -102,22 +102,56 @@ function displayHabitsForSelectedDate() {
     habitsContainer.innerHTML = '';
 
     const habitsForDate = habitsData[selectedDate] || [];
-
-    habitsForDate.forEach(habit => {
+    
+    habitsForDate.forEach((habit, index) => {
         const habitElement = document.createElement('div');
         habitElement.classList.add('habit');
+        
         habitElement.innerHTML = `
-            <button class="delete-habit">-</button>
+            <button class="delete-habit" data-index="${index}">-</button>
             <span>${habit.name}</span>
             <div class="habit-reminder">
                 <p>${habit.reminderText}</p>
                 <p>Повторение: ${habit.recurrence}</p>
             </div>
-            <button class="complete-habit">+</button>
+            <button class="complete-habit" data-index="${index}">+</button>
         `;
-        habitsContainer.appendChild(habitElement);
-    });
+
+        habitElement.querySelector('.delete-habit').addEventListener('click', (e) => {
+            const habitIndex = e.target.getAttribute('data-index');
+            confirmHabitDeletion(habitIndex, habit.name);
+        });
+
+         // Добаетки выполнения привычки (только если это сегодня)
+         const today = new Date().toISOString().split('T')[0];
+         if (selectedDate === today) {
+             habitElement.querySelector('.complete-habit').addEventListener('click', (e) => {
+                 const habitIndex = e.target.getAttribute('data-index');
+                 markHabitAsCompleted(habitIndex, habitElement);
+             });
+         } else {
+             habitElement.querySelector('.complete-habit').disabled = true; // Отключаем кнопку для других дней
+         }
+ 
+         habitsContainer.appendChild(habitElement);
+     });
+ }
+
+
+
+function deleteHabit(index) {
+    if (habitsData[selectedDate]) {
+        habitsData[selectedDate].splice(index, 1);
+        displayHabitsForSelectedDate();
+    }
 }
+function markHabitAsCompleted(index, habitElement) {
+    if (habitsData[selectedDate] && habitsData[selectedDate][index]) {
+        habitElement.style.backgroundColor = '#a9dfbf';
+        habitElement.querySelector('.complete-habit').disabled = true;
+    }
+}
+
 
 //добавление привычки в выбранный день
 submitHabitButton.addEventListener('click', () => {
