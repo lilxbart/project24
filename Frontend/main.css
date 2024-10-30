@@ -78,6 +78,20 @@ header {
 
 
 
+.day-habits-container {
+    margin-top: 5px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    padding: 5px;
+    min-height: 50px;
+}
+.day.selected {
+    border: 2px solid #555;
+}
+
+
+
+
 
 
 /*контейнер привычек*/

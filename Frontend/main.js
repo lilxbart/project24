@@ -1,9 +1,17 @@
 const modal = document.getElementById('habit-modal');
 const addHabitButton = document.getElementById('add-habit-button');
 const closeButton = document.querySelector('.close-button');
+const submitHabitButton = document.getElementById('submit-habit');
+const habitsContainer = document.getElementById('habits-container');
+let selectedDate = null;
+let habitsData = {};
 
 addHabitButton.addEventListener('click', () => {
-    modal.style.display = 'flex';
+    if (selectedDate) {
+        modal.style.display = 'flex';
+    } else {
+        alert("Пожалуйста, выберите дату, прежде чем добавлять привычку.");
+    }
 });
 
 closeButton.addEventListener('click', () => {
@@ -16,6 +24,7 @@ window.addEventListener('click', (event) => {
     }
 });
 
+//логика выбора дней для повторения привычек
 const recurrenceButtons = document.querySelectorAll('.habit-recurrence button');
 let selectedDays = [];
 
@@ -33,48 +42,104 @@ recurrenceButtons.forEach(button => {
     });
 });
 
-const habitsContainer = document.getElementById('habits-container');
+//создание календаря
+function updateCalendar() {
+    const calendarContainer = document.getElementById('calendar');
+    calendarContainer.innerHTML = '';
 
-habitsContainer.addEventListener('click', (event) => {
-    if (event.target.classList.contains('delete-habit')) {
-        event.target.closest('.habit').remove();
+    const today = new Date();
+    const daysOfWeek = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
+
+    for (let i = 30; i > 0; i--) {
+        const pastDate = new Date(today);
+        pastDate.setDate(today.getDate() - i);
+
+        const dayElement = createDayElement(pastDate, daysOfWeek);
+        calendarContainer.appendChild(dayElement);
     }
-});
 
-habitsContainer.addEventListener('click', (event) => {
-    if (event.target.classList.contains('complete-habit')) {
-        const habitElement = event.target.closest('.habit');
-        habitElement.style.backgroundColor = '#a9dfbf';
+    const todayElement = createDayElement(today, daysOfWeek, true);
+    calendarContainer.appendChild(todayElement);
+
+    for (let i = 1; i <= 30; i++) {
+        const futureDate = new Date(today);
+        futureDate.setDate(today.getDate() + i);
+
+        const dayElement = createDayElement(futureDate, daysOfWeek);
+        calendarContainer.appendChild(dayElement);
     }
-});
 
-const submitHabitButton = document.getElementById('submit-habit');
+    todayElement.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+}
+
+//создание элемента дня
+function createDayElement(date, daysOfWeek, isToday = false) {
+    const dayElement = document.createElement('div');
+    dayElement.classList.add('day');
+    if (isToday) dayElement.classList.add('active');
+
+    const dayName = daysOfWeek[date.getDay() === 0 ? 6 : date.getDay() - 1];
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+
+    dayElement.setAttribute('data-date', date.toISOString().split('T')[0]);
+    dayElement.innerHTML = `
+        <div class="day-header">${dayName}<br><span>${day}.${month}</span></div>
+    `;
+
+    dayElement.addEventListener('click', () => {
+        selectedDate = dayElement.getAttribute('data-date');
+        document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+        dayElement.classList.add('selected');
+        displayHabitsForSelectedDate();
+    });
+
+    return dayElement;
+}
+
+//отображение привычек для выбранной даты
+function displayHabitsForSelectedDate() {
+    habitsContainer.innerHTML = '';
+
+    const habitsForDate = habitsData[selectedDate] || [];
+
+    habitsForDate.forEach(habit => {
+        const habitElement = document.createElement('div');
+        habitElement.classList.add('habit');
+        habitElement.innerHTML = `
+            <button class="delete-habit">-</button>
+            <span>${habit.name}</span>
+            <div class="habit-reminder">
+                <p>${habit.reminderText}</p>
+                <p>Повторение: ${habit.recurrence}</p>
+            </div>
+            <button class="complete-habit">+</button>
+        `;
+        habitsContainer.appendChild(habitElement);
+    });
+}
+
+//добавление привычки в выбранный день
 submitHabitButton.addEventListener('click', () => {
     const habitName = document.getElementById('habit-name').value;
     const habitDescription = document.getElementById('habit-description').value;
     const reminder = document.getElementById('habit-reminder').checked;
     const time = document.getElementById('habit-time').value;
 
-    if (habitName) {
-        const newHabit = document.createElement('div');
-        newHabit.classList.add('habit');
-        
+    if (habitName && selectedDate) {
         const reminderText = reminder ? `Напоминание: ${time}` : 'Без напоминания';
-        
-        newHabit.innerHTML = `
-            <button class="delete-habit">-</button>
-            <span>${habitName}</span>
-            <div class="habit-reminder">
-                <p>${reminderText}</p>
-                <p>Повторение: ${selectedDays.join(', ') || 'Нет'}</p>
-            </div>
-            <button class="complete-habit">+</button>
-        `;
 
-        habitsContainer.appendChild(newHabit);
+        const newHabit = {
+            name: habitName,
+            description: habitDescription,
+            reminderText: reminderText,
+            recurrence: selectedDays.join(', ') || 'Нет'
+        };
+
+        addHabitWithRecurrence(newHabit);
+        displayHabitsForSelectedDate();
 
         modal.style.display = 'none';
-
         document.getElementById('habit-name').value = '';
         document.getElementById('habit-description').value = '';
         document.getElementById('habit-reminder').checked = false;
@@ -82,10 +147,41 @@ submitHabitButton.addEventListener('click', () => {
         selectedDays = [];
         recurrenceButtons.forEach(button => button.classList.remove('selected'));
     } else {
-        alert('Введите название привычки');
+        alert('Пожалуйста, выберите день и введите название привычки');
     }
 });
 
+
+//добавление привычки на конкретную дату
+function addHabitForDate(date, habit) {
+    const dateStr = date.toISOString().split('T')[0];
+    if (!habitsData[dateStr]) {
+        habitsData[dateStr] = [];
+    }
+    habitsData[dateStr].push(habit);
+}
+
+//добавление привычек с учётом повторений
+function addHabitWithRecurrence(habit) {
+    const startDate = new Date(selectedDate);
+    const recurrenceDays = selectedDays;
+
+    for (let i = 0; i < 365; i++) {
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + i);
+
+        if (recurrenceDays.includes("КАЖДЫЙ ДЕНЬ")) {
+            addHabitForDate(currentDate, habit);
+        } else {
+            const dayOfWeek = currentDate.toLocaleDateString('ru-RU', { weekday: 'short' }).toUpperCase();
+            if (recurrenceDays.includes(dayOfWeek)) {
+                addHabitForDate(currentDate, habit);
+            }
+        }
+    }
+}
+
+//текущей даты в заголовке
 function setCurrentDate() {
     const currentDateElement = document.getElementById('current-date');
     const today = new Date();
@@ -96,70 +192,5 @@ function setCurrentDate() {
     currentDateElement.textContent = formattedDate;
 }
 
-function updateCalendar() {
-    const calendarContainer = document.getElementById('calendar');
-    calendarContainer.innerHTML = '';
-
-    const today = new Date();
-    const todayDay = today.getDate();
-    const todayMonth = today.getMonth();
-    const daysOfWeek = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
-
-    for (let i = 30; i > 0; i--) {
-        const pastDate = new Date(today);
-        pastDate.setDate(today.getDate() - i);
-
-        const dayElement = document.createElement('div');
-        dayElement.classList.add('day');
-
-        const dayName = daysOfWeek[pastDate.getDay() === 0 ? 6 : pastDate.getDay() - 1];
-        const day = pastDate.getDate().toString().padStart(2, '0');
-        const month = (pastDate.getMonth() + 1).toString().padStart(2, '0');
-
-        dayElement.innerHTML = `${dayName}<br><span>${day}.${month}</span>`;
-
-        if (pastDate.getDate() === todayDay && pastDate.getMonth() === todayMonth) {
-            dayElement.classList.add('active');
-        }
-
-        calendarContainer.appendChild(dayElement);
-    }
-
-    const todayElement = document.createElement('div');
-    todayElement.classList.add('day', 'active');
-    const dayName = daysOfWeek[today.getDay() === 0 ? 6 : today.getDay() - 1];
-    const day = today.getDate().toString().padStart(2, '0');
-    const month = (today.getMonth() + 1).toString().padStart(2, '0');
-    todayElement.innerHTML = `${dayName}<br><span>${day}.${month}</span>`;
-    calendarContainer.appendChild(todayElement);
-
-    for (let i = 1; i <= 30; i++) {
-        const futureDate = new Date(today);
-        futureDate.setDate(today.getDate() + i);
-
-        const dayElement = document.createElement('div');
-        dayElement.classList.add('day');
-
-        const dayName = daysOfWeek[futureDate.getDay() === 0 ? 6 : futureDate.getDay() - 1];
-        const day = futureDate.getDate().toString().padStart(2, '0');
-        const month = (futureDate.getMonth() + 1).toString().padStart(2, '0');
-
-        dayElement.innerHTML = `${dayName}<br><span>${day}.${month}</span>`;
-        calendarContainer.appendChild(dayElement);
-    }
-
-    todayElement.scrollIntoView({ inline: 'center', behavior: 'smooth' });
-}
-
-updateCalendar();
-
-
-function highlightCurrentDay() {
-    const today = new Date();
-    const calendarDays = document.querySelectorAll('.calendar .day');
-    calendarDays[0].classList.add('active');
-}
-
 setCurrentDate();
 updateCalendar();
-highlightCurrentDay();
