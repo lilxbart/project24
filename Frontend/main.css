@@ -6,6 +6,8 @@ body {
     padding: 0;
 }
 
+
+
 /*заголовок и дата*/
 header {
     background-color: #6f6a6a;
@@ -18,11 +20,12 @@ header {
     margin: 0;
     font-size: 24px;
 }
-
 #date p {
     margin: 0;
-    font-size: 16px;
+    font-size: 18px;
 }
+
+
 
 /*основной контейнер*/
 .main-container {
@@ -30,17 +33,17 @@ header {
     padding: 20px;
     justify-content: space-between;
 }
-
 .left-container {
     width: 70%;
 }
-
 .right-container {
     width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
+
 
 /*календарь*/
 .calendar {
@@ -51,7 +54,6 @@ header {
     padding: 10px;
     border-radius: 8px;
 }
-
 .day {
     text-align: center;
     padding: 10px;
@@ -59,15 +61,19 @@ header {
     border-radius: 4px;
     font-weight: bold;
 }
-
 .day.active {
     background-color: #4b4b4b;
     color: white;
 }
 
+
+
 /*контейнер привычек*/
 .habits-scroll-container {
-    max-height: 500px;
+    max-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     overflow-y: auto;
     margin-top: 20px;
     padding-right: 10px;
@@ -75,10 +81,11 @@ header {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
 .habits-container {
     padding: 10px;
 }
+
+
 
 /*привыка*/
 .habit {
@@ -92,6 +99,8 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+
+
 /*напоминание*/
 .habit-reminder {
     text-align: center;
@@ -101,6 +110,8 @@ header {
     color: white;
     font-size: 12px;
 }
+
+
 
 /*удаления привычки*/
 button.delete-habit {
@@ -115,6 +126,7 @@ button.delete-habit {
     cursor: pointer;
 }
 
+
 /*выполнения привычки*/
 button.complete-habit {
     background-color: #5b835b;
@@ -128,14 +140,15 @@ button.complete-habit {
     cursor: pointer;
 }
 
+
 /*кнопоки*/
 button:hover {
     opacity: 0.9;
 }
-
 button:focus {
     outline: none;
 }
+
 
 /*добавления привычки*/
 #add-habit-button {
@@ -147,22 +160,20 @@ button:focus {
     cursor: pointer;
     margin-top: 20px;
 }
-
 #add-habit-button:hover {
     background-color: #2b2b2b;
 }
+
 
 /*прогресс и награды*/
 .progress-container {
     margin-bottom: 20px;
 }
-
 .chart {
     background-color: #803f3f;
     width: 100px;
     height: 150px;
 }
-
 .rewards-container {
     background-color: #d3d3d3;
     padding: 20px;
@@ -171,7 +182,6 @@ button:focus {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
 }
-
 .reward-slot {
     background-color: #ccc;
     height: 50px;
@@ -193,7 +203,6 @@ button:focus {
     justify-content: center;
     align-items: center;
 }
-
 .modal-content {
     background-color: #fefefe;
     padding: 20px;
@@ -202,7 +211,6 @@ button:focus {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
 }
-
 .close-button {
     position: absolute;
     top: 10px;
@@ -210,13 +218,11 @@ button:focus {
     font-size: 28px;
     cursor: pointer;
 }
-
 label {
     display: block;
     margin-top: 15px;
     font-size: 16px;
 }
-
 input[type="text"],
 textarea {
     width: 95%;
@@ -225,19 +231,16 @@ textarea {
     border-radius: 5px;
     border: 1px solid #ccc;
 }
-
 textarea {
     height: 40px;
     resize: none;
 }
-
 .habit-recurrence {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 10px;
 }
-
 .habit-recurrence button {
     padding: 10px;
     border: none;
@@ -245,18 +248,15 @@ textarea {
     border-radius: 5px;
     cursor: pointer;
 }
-
 .habit-recurrence button:hover {
     background-color: #bbb;
 }
-
 .habit-reminder-toggle {
     margin-top: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
 }
-
 input[type="time"] {
     display: block;
     margin-top: 10px;
@@ -264,7 +264,6 @@ input[type="time"] {
     border-radius: 5px;
     border: 1px solid #ccc;
 }
-
 button#submit-habit {
     width: 100%;
     padding: 10px;
@@ -275,18 +274,15 @@ button#submit-habit {
     margin-top: 20px;
     cursor: pointer;
 }
-
 button#submit-habit:hover {
     background-color: #2b2b2b;
 }
-
 .habit-recurrence {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 10px;
 }
-
 .habit-recurrence button {
     padding: 10px;
     border: none;
@@ -294,12 +290,10 @@ button#submit-habit:hover {
     border-radius: 5px;
     cursor: pointer;
 }
-
 .habit-recurrence button.selected {
     background-color: #555555;
     color: white;
 }
-
 .habit-recurrence button:hover {
     background-color: #bbb;
 }
