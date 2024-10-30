@@ -80,7 +80,7 @@ submitHabitButton.addEventListener('click', () => {
         document.getElementById('habit-reminder').checked = false;
         document.getElementById('habit-time').value = '10:00';
         selectedDays = [];
-        recurrenceButtons.forEach(button => button.classList.remove('selected')); // Убираем выделение с кнопок
+        recurrenceButtons.forEach(button => button.classList.remove('selected'));
     } else {
         alert('Введите название привычки');
     }
@@ -97,21 +97,62 @@ function setCurrentDate() {
 }
 
 function updateCalendar() {
+    const calendarContainer = document.getElementById('calendar');
+    calendarContainer.innerHTML = '';
+
     const today = new Date();
+    const todayDay = today.getDate();
+    const todayMonth = today.getMonth();
     const daysOfWeek = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
-    const calendarDays = document.querySelectorAll('.calendar .day');
-    
-    for (let i = 0; i < 7; i++) {
+
+    for (let i = 30; i > 0; i--) {
+        const pastDate = new Date(today);
+        pastDate.setDate(today.getDate() - i);
+
+        const dayElement = document.createElement('div');
+        dayElement.classList.add('day');
+
+        const dayName = daysOfWeek[pastDate.getDay() === 0 ? 6 : pastDate.getDay() - 1];
+        const day = pastDate.getDate().toString().padStart(2, '0');
+        const month = (pastDate.getMonth() + 1).toString().padStart(2, '0');
+
+        dayElement.innerHTML = `${dayName}<br><span>${day}.${month}</span>`;
+
+        if (pastDate.getDate() === todayDay && pastDate.getMonth() === todayMonth) {
+            dayElement.classList.add('active');
+        }
+
+        calendarContainer.appendChild(dayElement);
+    }
+
+    const todayElement = document.createElement('div');
+    todayElement.classList.add('day', 'active');
+    const dayName = daysOfWeek[today.getDay() === 0 ? 6 : today.getDay() - 1];
+    const day = today.getDate().toString().padStart(2, '0');
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    todayElement.innerHTML = `${dayName}<br><span>${day}.${month}</span>`;
+    calendarContainer.appendChild(todayElement);
+
+    for (let i = 1; i <= 30; i++) {
         const futureDate = new Date(today);
         futureDate.setDate(today.getDate() + i);
-        
+
+        const dayElement = document.createElement('div');
+        dayElement.classList.add('day');
+
         const dayName = daysOfWeek[futureDate.getDay() === 0 ? 6 : futureDate.getDay() - 1];
         const day = futureDate.getDate().toString().padStart(2, '0');
         const month = (futureDate.getMonth() + 1).toString().padStart(2, '0');
 
-        calendarDays[i].innerHTML = `${dayName}<br><span>${day}.${month}</span>`;
+        dayElement.innerHTML = `${dayName}<br><span>${day}.${month}</span>`;
+        calendarContainer.appendChild(dayElement);
     }
+
+    todayElement.scrollIntoView({ inline: 'center', behavior: 'smooth' });
 }
+
+updateCalendar();
+
 
 function highlightCurrentDay() {
     const today = new Date();
