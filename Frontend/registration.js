@@ -30,7 +30,6 @@ signinForm.addEventListener('submit', function(e) {
     }
 });
 
-
 async function registerUser(username, email, password) {
     const response = await fetch('/api/register', {
         method: 'POST',
@@ -48,3 +47,24 @@ async function loginUser(username, password) {
     });
     return response.json();
 }
+
+signupForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById('signup-username').value;
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+
+    if (username && email && password) {
+        const response = await registerUser(username, email, password);
+        
+        if (response.success) {
+            alert('Регистрация прошла успешно!');
+            toggleButton.click();  // переключаемся на форму входа
+        } else {
+            alert('Ошибка при регистрации: ' + response.message);
+        }
+    } else {
+        alert('Пожалуйста, заполните все поля.');
+    }
+});
