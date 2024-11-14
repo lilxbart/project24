@@ -65,7 +65,7 @@ button:hover {
 
 /* Стиль для иконки восклицательного знака */
 .icon-warning {
-    color: #ff6347; /* Красный цвет, можно заменить на любой другой */
+    color: #ff6347;
     font-size: 18px;
     margin-left: 5px;
     display: none;

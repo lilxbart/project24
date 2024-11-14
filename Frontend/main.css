@@ -166,6 +166,12 @@ button.complete-habit {
     cursor: pointer;
 }
 
+.habit.completed {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+
 
 /*кнопоки*/
 button:hover {

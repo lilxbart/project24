@@ -274,8 +274,34 @@ submitHabitButton.addEventListener('click', () => {
     modal.style.display = 'none';
     resetHabitForm();
 });
+//для отметки привычки как выполненной
+async function markHabitAsCompleted(habitId, habitElement) {
+    try {
+        const response = await fetch(`/api/habits/${habitId}/complete`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ completed: true })
+        });
 
-
+        if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+                habitElement.classList.add('completed');
+                habitElement.querySelector('.complete-habit').textContent = '✓'; // Изменяем текст кнопки
+                habitElement.querySelector('.complete-habit').disabled = true; // Отключаем кнопку
+                alert('Привычка отмечена как выполненная');
+            } else {
+                alert('Ошибка при обновлении привычки');
+            }
+        } else {
+            alert('Ошибка сервера при обновлении привычки');
+        }
+    } catch (error) {
+        console.error("Ошибка при обновлении привычки:", error);
+    }
+}
 
 
 
