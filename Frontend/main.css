@@ -352,3 +352,12 @@ button#submit-habit:hover {
 }
 
 
+/*пользователь*/
+.user-info {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: white;
+    font-weight: bold;
+}
+

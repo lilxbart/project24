@@ -60,11 +60,24 @@ signupForm.addEventListener('submit', async function(e) {
         
         if (response.success) {
             alert('Регистрация прошла успешно!');
-            toggleButton.click();  // переключаемся на форму входа
+            toggleButton.click();
         } else {
             alert('Ошибка при регистрации: ' + response.message);
         }
     } else {
         alert('Пожалуйста, заполните все поля.');
+    }
+});
+
+signinForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const username = document.getElementById('signin-username').value;
+    const password = document.getElementById('signin-password').value;
+
+    if (username && password) {
+        localStorage.setItem('username', username);
+        mainPageLink.click();
+    } else {
+        alert('Please fill in all fields.');
     }
 });

@@ -42,6 +42,21 @@ recurrenceButtons.forEach(button => {
     });
 });
 
+
+//текущей даты в заголовке
+function setCurrentDate() {
+    const currentDateElement = document.getElementById('current-date');
+    const today = new Date();
+
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = today.toLocaleDateString('ru-RU', options);
+
+    currentDateElement.textContent = formattedDate;
+}
+
+setCurrentDate();
+updateCalendar();
+
 //создание календаря
 function updateCalendar() {
     const calendarContainer = document.getElementById('calendar');
@@ -97,96 +112,126 @@ function createDayElement(date, daysOfWeek, isToday = false) {
     return dayElement;
 }
 
-//отображение привычек для выбранной даты
+
+
+//Функция для отображения привычек на выбранную дату
 function displayHabitsForSelectedDate() {
     habitsContainer.innerHTML = '';
 
     const habitsForDate = habitsData[selectedDate] || [];
-    
-    habitsForDate.forEach((habit, index) => {
+
+    habitsForDate.forEach((habit) => {
         const habitElement = document.createElement('div');
         habitElement.classList.add('habit');
-        
+
         habitElement.innerHTML = `
-            <button class="delete-habit" data-index="${index}">-</button>
+            <button class="delete-habit" data-id="${habit.id}">-</button>
             <span>${habit.name}</span>
             <div class="habit-reminder">
                 <p>${habit.reminderText}</p>
                 <p>Повторение: ${habit.recurrence}</p>
             </div>
-            <button class="complete-habit" data-index="${index}">+</button>
+            <button class="complete-habit">+</button>
         `;
 
+        //обработчик кнопки удаления
         habitElement.querySelector('.delete-habit').addEventListener('click', (e) => {
-            const habitIndex = e.target.getAttribute('data-index');
-            confirmHabitDeletion(habitIndex, habit.name);
+            const habitId = e.target.getAttribute('data-id');
+            confirmHabitDeletion(habitId, habit.name);
+        });
+        const today = new Date().toISOString().split('T')[0];
+        if (selectedDate === today) {
+            habitElement.querySelector('.complete-habit').addEventListener('click', () => {
+                markHabitAsCompleted(habit.id, habitElement);
+            });
+        } else {
+            habitElement.querySelector('.complete-habit').disabled = true; // Отключаем кнопку для других дней
+        }
+
+        habitsContainer.appendChild(habitElement);
+    });
+}
+
+//для подтверждения удаления привычки
+function confirmHabitDeletion(habitId, habitName) {
+    if (confirm(`Вы уверены, что хотите удалить привычку "${habitName}"?`)) {
+        deleteHabitFromServer(habitId); // Вызываем удаление на сервере после подтверждения
+    }
+}
+
+//для удаления привычки на сервере
+async function deleteHabitFromServer(habitId) {
+    try {
+        const response = await fetch(`/api/habits/${habitId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
 
-         // Добаетки выполнения привычки (только если это сегодня)
-         const today = new Date().toISOString().split('T')[0];
-         if (selectedDate === today) {
-             habitElement.querySelector('.complete-habit').addEventListener('click', (e) => {
-                 const habitIndex = e.target.getAttribute('data-index');
-                 markHabitAsCompleted(habitIndex, habitElement);
-             });
-         } else {
-             habitElement.querySelector('.complete-habit').disabled = true; // Отключаем кнопку для других дней
-         }
- 
-         habitsContainer.appendChild(habitElement);
-     });
- }
-
-
-
-function deleteHabit(index) {
-    if (habitsData[selectedDate]) {
-        habitsData[selectedDate].splice(index, 1);
-        displayHabitsForSelectedDate();
-    }
-}
-function markHabitAsCompleted(index, habitElement) {
-    if (habitsData[selectedDate] && habitsData[selectedDate][index]) {
-        habitElement.style.backgroundColor = '#a9dfbf';
-        habitElement.querySelector('.complete-habit').disabled = true;
+        const data = await response.json();
+        if (data.success) {
+            alert('Привычка успешно удалена');
+            displayHabitsForSelectedDate();
+        } else {
+            alert('Ошибка при удалении привычки');
+        }
+    } catch (error) {
+        console.error("Ошибка при удалении привычки:", error);
     }
 }
 
 
-//добавление привычки в выбранный день
-submitHabitButton.addEventListener('click', () => {
+
+
+//ПРИВЫЧКИ
+//для сбора данных привычки из полей формы
+function getHabitFromForm() {
     const habitName = document.getElementById('habit-name').value;
     const habitDescription = document.getElementById('habit-description').value;
     const reminder = document.getElementById('habit-reminder').checked;
     const time = document.getElementById('habit-time').value;
+    const recurrence = selectedDays.join(', ') || 'Нет';
 
-    if (habitName && selectedDate) {
-        const reminderText = reminder ? `Напоминание: ${time}` : 'Без напоминания';
+    return {
+        username: localStorage.getItem('username'),//замена на реальное имя, если из БД
+        habit_name: habitName,
+        description: habitDescription,
+        reminder_text: reminder ? `Напоминание: ${time}` : 'Без напоминания',
+        recurrence: recurrence
+    };
+}
+//очистка формы привычки
+function resetHabitForm() {
+    document.getElementById('habit-name').value = '';
+    document.getElementById('habit-description').value = '';
+    document.getElementById('habit-reminder').checked = false;
+    document.getElementById('habit-time').value = '10:00';
+    selectedDays = [];
+    recurrenceButtons.forEach(button => button.classList.remove('selected'));
+}
+//привычки на сервере
+async function saveHabit(habit) {
+    try {
+        const response = await fetch('/api/habits', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(habit)
+        });
 
-        const newHabit = {
-            name: habitName,
-            description: habitDescription,
-            reminderText: reminderText,
-            recurrence: selectedDays.join(', ') || 'Нет'
-        };
-
-        addHabitWithRecurrence(newHabit);
-        displayHabitsForSelectedDate();
-
-        modal.style.display = 'none';
-        document.getElementById('habit-name').value = '';
-        document.getElementById('habit-description').value = '';
-        document.getElementById('habit-reminder').checked = false;
-        document.getElementById('habit-time').value = '10:00';
-        selectedDays = [];
-        recurrenceButtons.forEach(button => button.classList.remove('selected'));
-    } else {
-        alert('Пожалуйста, выберите день и введите название привычки');
+        const data = await response.json();
+        if (data.success) {
+            alert('Привычка успешно сохранена');
+        } else {
+            alert('Ошибка при сохранении привычки');
+        }
+    } catch (error) {
+        console.error("Ошибка при отправке привычки:", error);
     }
-});
-
-
-//добавление привычки на конкретную дату
+}
+//на конкретную дату
 function addHabitForDate(date, habit) {
     const dateStr = date.toISOString().split('T')[0];
     if (!habitsData[dateStr]) {
@@ -194,8 +239,7 @@ function addHabitForDate(date, habit) {
     }
     habitsData[dateStr].push(habit);
 }
-
-//добавление привычек с учётом повторений
+//с учетом повторений
 function addHabitWithRecurrence(habit) {
     const startDate = new Date(selectedDate);
     const recurrenceDays = selectedDays;
@@ -214,17 +258,43 @@ function addHabitWithRecurrence(habit) {
         }
     }
 }
+//добавления привычки
+submitHabitButton.addEventListener('click', () => {
+    if (!selectedDate) {
+        alert('Пожалуйста, выберите день и введите название привычки');
+        return;
+    }
 
-//текущей даты в заголовке
-function setCurrentDate() {
-    const currentDateElement = document.getElementById('current-date');
-    const today = new Date();
+    const newHabit = getHabitFromForm();
+    addHabitWithRecurrence(newHabit);
+    saveHabit(newHabit);  //на сервер
 
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = today.toLocaleDateString('ru-RU', options);
+    displayHabitsForSelectedDate();
 
-    currentDateElement.textContent = formattedDate;
+    modal.style.display = 'none';
+    resetHabitForm();
+});
+
+
+
+
+
+async function loadUserData() {
+    try {
+        //получения данных пользователя
+        const response = await fetch('/api/user-data');
+        if (!response.ok) throw new Error('Ошибка получения данных с сервера');
+
+        const data = await response.json();
+
+        if (data.username) {
+            document.getElementById('username-display').textContent = `Привет, ${data.username}`;
+            document.getElementById('progress-display').textContent = `Твой прогресс: ${data.progressDays || 0} дней`;
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
 }
+document.addEventListener('DOMContentLoaded', loadUserData);
 
-setCurrentDate();
-updateCalendar();
+
