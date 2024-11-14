@@ -281,20 +281,20 @@ submitHabitButton.addEventListener('click', () => {
 
 async function loadUserData() {
     try {
-        //получения данных пользователя
         const response = await fetch('/api/user-data');
         if (!response.ok) throw new Error('Ошибка получения данных с сервера');
 
         const data = await response.json();
 
         if (data.username) {
-            document.getElementById('username-display').textContent = `Привет, ${data.username}`;
-            document.getElementById('progress-display').textContent = `Твой прогресс: ${data.progressDays || 0} дней`;
+            document.getElementById('username-text').textContent = data.username;
+            document.getElementById('progress-text').textContent = data.progressDays || 0;
         }
     } catch (error) {
         console.error('Ошибка:', error);
     }
 }
+
 document.addEventListener('DOMContentLoaded', loadUserData);
 
 
