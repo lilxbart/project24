@@ -357,7 +357,7 @@ button#submit-habit:hover {
     position: absolute;
     top: 8px;
     right: 15px;
-    background-color: #555;
+    background-color: #333333;
     color: white;
     font-weight: bold;
     padding: 10px 15px;
